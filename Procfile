@@ -1,0 +1,1 @@
+web: gunicorn iskra.wsgi:application
