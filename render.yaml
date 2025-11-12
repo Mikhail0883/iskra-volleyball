@@ -1,16 +1,14 @@
 services:
   - type: web
-    name: iskra-volleyball
+    name: iskra-django
     env: python
-    region: frankfurt
-    buildCommand: "python manage.py collectstatic --noinput"
+    plan: free
+    buildCommand: "./build.sh"
     startCommand: "gunicorn iskra.wsgi:application"
     envVars:
-      - key: SECRET_KEY
-        sync: false
       - key: DEBUG
         value: "False"
-      - key: ALLOWED_HOSTS
-        value: ".onrender.com"
-      - key: DATABASE_URL
+      - key: SECRET_KEY
         generateValue: true
+      - key: WEB_CONCURRENCY
+        value: "4"
