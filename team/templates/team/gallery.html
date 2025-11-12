@@ -1,0 +1,49 @@
+{% extends 'team/base.html' %}
+{% block title %}Фотогалерея — ВК «ИСКРА»{% endblock %}
+{% block content %}
+<h2>Фотогалерея</h2>
+{% if albums %}
+    <div style="display: flex; flex-wrap: wrap; gap: 25px; justify-content: center;">
+    {% for album in albums %}
+        <div style="
+            background: white;
+            border: 2px solid #0033a0;
+            border-radius: 8px;
+            width: 220px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        ">
+            {% if album.photos.first %}
+                <a href="{% url 'album_detail' album.id %}" style="display: block; padding: 10px;">
+                    <img src="{{ album.photos.first.image.url }}" alt="{{ album.title }}" style="width: 180px; height: 180px; object-fit: cover; border-radius: 4px;">
+                </a>
+            {% else %}
+                <div style="width: 180px; height: 180px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">Нет фото</div>
+            {% endif %}
+            <h3 style="margin: 10px 0; color: #e30613;">{{ album.title }}</h3>
+            <p>{{ album.photos.count }} фото</p>
+            <small>{{ album.description|truncatewords:10 }}</small>
+        </div>
+    {% endfor %}
+    </div>
+
+    <!-- Пагинация -->
+    <div style="text-align: center; margin-top: 2rem;">
+        {% if albums.has_previous %}
+            <a href="?page=1" style="color: #0033a0; margin: 0 5px;">« Первая</a>
+            <a href="?page={{ albums.previous_page_number }}" style="color: #0033a0; margin: 0 5px;">‹ Назад</a>
+        {% endif %}
+
+        <span style="margin: 0 10px;">
+            Страница {{ albums.number }} из {{ albums.paginator.num_pages }}
+        </span>
+
+        {% if albums.has_next %}
+            <a href="?page={{ albums.next_page_number }}" style="color: #0033a0; margin: 0 5px;">Вперёд ›</a>
+            <a href="?page={{ albums.paginator.num_pages }}" style="color: #0033a0; margin: 0 5px;">Последняя »</a>
+        {% endif %}
+    </div>
+{% else %}
+    <p>Альбомов пока нет.</p>
+{% endif %}
+{% endblock %}

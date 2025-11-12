@@ -1,0 +1,29 @@
+{% extends 'team/base.html' %}
+{% block content %}
+<h2>Календарь матчей «ИСКРА»</h2>
+<ul style="list-style: none; padding: 0;">
+{% for match in matches %}
+    <li style="
+        background: white;
+        border-left: 5px solid {% if match.is_home %}var(--red){% else %}var(--blue){% endif %};
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 0 6px 6px 0;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    ">
+        <strong>{{ match.date|date:"l, d E Y в H:i" }}</strong><br>
+        {% if match.is_home %}
+            <span style="color: var(--red);">ДОМА:</span> «ИСКРА» vs {{ match.opponent }}
+        {% else %}
+            <span style="color: var(--blue);">В ГОСТЯХ:</span> {{ match.opponent }} vs «ИСКРА»
+        {% endif %}
+        {% if match.result %}
+            <br><strong>Счёт: {{ match.result }}</strong>
+        {% endif %}
+        <br><small>📍 {{ match.location }}</small>
+    </li>
+{% empty %}
+    <li>Матчи пока не запланированы.</li>
+{% endfor %}
+</ul>
+{% endblock %}

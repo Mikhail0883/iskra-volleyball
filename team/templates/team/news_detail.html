@@ -1,0 +1,46 @@
+{% extends 'team/base.html' %}
+{% block title %}{{ news.title }} — ВК «ИСКРА»{% endblock %}
+{% block content %}
+<a href="{% url 'news_list' %}" style="color: #0033a0; display: inline-block; margin-bottom: 1rem;">← Все новости</a>
+<h1>{{ news.title }}</h1>
+<small>{{ news.created_at|date:"d E Y в H:i" }}</small>
+{% if news.cover %}
+    <img src="{{ news.cover.url }}" alt="{{ news.title }}" style="width: 100%; max-height: 400px; object-fit: cover; margin: 1rem 0; border-radius: 6px;">
+{% endif %}
+<div style="line-height: 1.6; margin-top: 1.5rem;">
+    {{ news.content|linebreaks }}
+</div>
+
+<!-- Комментарии -->
+<div style="margin-top: 3rem; border-top: 2px solid #eee; padding-top: 2rem;">
+    <h3>Комментарии ({{ comments.count }})</h3>
+
+    {% for comment in comments %}
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 1rem;">
+            <strong>{{ comment.author_name }}</strong>
+            <small style="color: #666; margin-left: 10px;">{{ comment.created_at|date:"d E Y в H:i" }}</small>
+            <p style="margin: 10px 0 0 0;">{{ comment.content|linebreaks }}</p>
+        </div>
+    {% empty %}
+        <p>Пока нет комментариев. Будьте первым!</p>
+    {% endfor %}
+
+    <!-- Форма добавления комментария -->
+    <div style="background: white; border: 1px solid #ddd; padding: 20px; border-radius: 6px; margin-top: 2rem;">
+        <h4>Оставить комментарий</h4>
+        <form method="post">
+            {% csrf_token %}
+            <div style="margin-bottom: 15px;">
+                {{ form.author_name }}
+            </div>
+            <div style="margin-bottom: 15px;">
+                {{ form.email }}
+            </div>
+            <div style="margin-bottom: 15px;">
+                {{ form.content }}
+            </div>
+            <button type="submit" style="background: #e30613; color: white; padding: 10px 20px; border: none; border-radius: 4px;">Отправить комментарий</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

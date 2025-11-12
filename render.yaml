@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: iskra-volleyball
+    env: python
+    region: frankfurt
+    buildCommand: "python manage.py collectstatic --noinput"
+    startCommand: "gunicorn iskra.wsgi:application"
+    envVars:
+      - key: SECRET_KEY
+        sync: false
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"
+      - key: DATABASE_URL
+        generateValue: true

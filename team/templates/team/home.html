@@ -1,0 +1,19 @@
+{% extends 'team/base.html' %}
+{% block content %}
+<h2>Добро пожаловать в семью «ИСКРА»!</h2>
+<p>Наша команда объединяет талант, страсть и стремление к победе.</p>
+
+{% if latest_news %}
+    <h3>Последние новости</h3>
+    {% for news in latest_news %}
+        <div style="margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px dashed #ddd;">
+            <h4><a href="{% url 'news_detail' news.slug %}" style="color: #e30613;">{{ news.title }}</a></h4>
+            <small>{{ news.created_at|date:"d E Y" }}</small>
+            <p>{{ news.content|truncatewords:20 }}</p>
+        </div>
+    {% endfor %}
+    <p><a href="{% url 'news_list' %}" style="color: #0033a0;">Все новости →</a></p>
+{% endif %}
+
+<p>Следите за нашими <a href="{% url 'matches' %}">матчами</a> и поддерживайте команду!</p>
+{% endblock %}

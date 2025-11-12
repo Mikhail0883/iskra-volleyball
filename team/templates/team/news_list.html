@@ -1,0 +1,35 @@
+{% extends 'team/base.html' %}
+{% block title %}Новости — ВК «ИСКРА»{% endblock %}
+{% block content %}
+<h2>Новости клуба</h2>
+{% for item in news %}
+    <article style="margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid #eee;">
+        {% if item.cover %}
+            <img src="{{ item.cover.url }}" alt="{{ item.title }}" style="width: 100%; max-height: 300px; object-fit: cover; border-radius: 6px;">
+        {% endif %}
+        <h3><a href="{% url 'news_detail' item.slug %}" style="color: #e30613; text-decoration: none;">{{ item.title }}</a></h3>
+        <small>{{ item.created_at|date:"d E Y" }}</small>
+        <p>{{ item.content|truncatewords:30 }}</p>
+        <a href="{% url 'news_detail' item.slug %}" style="color: #0033a0;">Читать далее →</a>
+    </article>
+{% empty %}
+    <p>Новостей пока нет.</p>
+{% endfor %}
+
+<!-- Пагинация -->
+<div style="text-align: center; margin-top: 2rem;">
+    {% if news.has_previous %}
+        <a href="?page=1" style="color: #0033a0; margin: 0 5px;">« Первая</a>
+        <a href="?page={{ news.previous_page_number }}" style="color: #0033a0; margin: 0 5px;">‹ Назад</a>
+    {% endif %}
+
+    <span style="margin: 0 10px;">
+        Страница {{ news.number }} из {{ news.paginator.num_pages }}
+    </span>
+
+    {% if news.has_next %}
+        <a href="?page={{ news.next_page_number }}" style="color: #0033a0; margin: 0 5px;">Вперёд ›</a>
+        <a href="?page={{ news.paginator.num_pages }}" style="color: #0033a0; margin: 0 5px;">Последняя »</a>
+    {% endif %}
+</div>
+{% endblock %}

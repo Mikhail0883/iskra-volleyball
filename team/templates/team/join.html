@@ -1,0 +1,10 @@
+{% extends 'team/base.html' %}
+{% block title %}Вступить в команду — ВК «ИСКРА»{% endblock %}
+{% block content %}
+<h2>Подать заявку в команду</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" style="background: #e30613; color: white; padding: 10px 20px; border: none; border-radius: 4px;">Отправить заявку</button>
+</form>
+{% endblock %}
